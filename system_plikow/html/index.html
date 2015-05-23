@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>System Plików: Strona główna</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">System Plików
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li class="current"><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('index.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">System Plików Dokumentacja</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><dl class="section author"><dt>Autor</dt><dd>Tomasz Jakubczyk </dd></dl>
+<h1><a class="anchor" id="struktura"></a>
+Struktura Dysku Wirtualnego</h1>
+<h2><a class="anchor" id="opis_naglowka"></a>
+Opis Nagłówka</h2>
+<p>Na samym początku pliku występuje nagłówek dysku. </p>
+<h3><a class="anchor" id="naglowek"></a>
+Nagłówek:</h3>
+<ul>
+<li>4 bajty napis "TJFS" do rozpoznawania mojego pliku.</li>
+<li>4 bajty (unsigned long int) rozmiar pliku (a zarazem jego koniec) w bajtach.</li>
+<li>4 bajty adres pierwszego fragmentu dziennika. Jeśli jest zero, to znaczy, że nie ma utworzonego dziennika, a zatem też żadnych plików. </li>
+</ul>
+<h2><a class="anchor" id="opis_dziennika"></a>
+Opis Dziennika</h2>
+<p>Na powyższym adresie zaczyna się pierwszy fragment dziennika. Dziennik może składać się z wielu fragmentów i jest swego rodzaju listą jednokierunkową. </p>
+<h3><a class="anchor" id="dziennik"></a>
+Fragment dziennika:</h3>
+<ul>
+<li>2 bajty długość fragmentu dziennika w bajtach (najprawdopodobniej będzie wyrównana do dword'a) Po informacji o fragmencie dziennika następują informacje o plikach.</li>
+<li>1 bajt długość nazwy pliku w bajtach.</li>
+<li>n bajtów nazwy pliku (zapewne na końcu uzupełniona zerami -napisy są zwykle null terminated-, tak aby uzyskać globalne dopełnienie do dword'a).</li>
+<li>4 bajty rozmiar pliku w bajtach.</li>
+<li>4 bajty adres pierwszego fragmentu pliku. Pliki mogą być podzielone na fragmenty tworzące listę jednokierunkową.</li>
+<li>Teraz mogą wystąpić informacje o innych plikach w takim samym formacie, lub przynajmniej 4 następne bajty mają wartość 0.</li>
+<li>4 bajty wskazujące na ewentualny następny fragment dziennika lub 0 znaczące, że to ostatni fragment dziennika. Ten dword najlpiej jeśli będzie wyrównany globalnie do dworda w prawo. </li>
+</ul>
+<h2><a class="anchor" id="opis_plikow"></a>
+Opis Plików</h2>
+<p>Pod adresem z dziennika znajduje się początek listy fragmentów zawierającyh plik. </p>
+<h3><a class="anchor" id="pliki"></a>
+Fragmenty plików:</h3>
+<ul>
+<li>4 bajty na rozmiar danego fragmentu pliku. Z uwzględnieniem wyrównania ostatniego dword'a</li>
+<li>bajty pliku</li>
+<li>4 bajty adres następnego fragmentu pliku, lub 0 jeśli to ostatni fragment. </li>
+</ul>
+<h1><a class="anchor" id="znaczenia"></a>
+Znaczenia Rozmiarów</h1>
+<p>Bajty pełniące funkcje dworda trzymającego rozmiar lub adres dobrze, żeby miały wyrównanie naturalne do 4, bo wtedy łatwiej jest oglądać dysk w hex edytorze, lub wykonywać obliczenia oparte o system dwujkowy. Jeśli odnoszę się do rozmairu fragmentu, to mam na mysil cały rozmiar fragmentu, tak, żeby bez dodatkowych operacji wyliczyć koniec fragmentu. Dword rozmiaru pliku zawiera w sobie tylko i wyłącznie rozmiar pliku, taki, jak odczytany, przy jego kopiowaniu/otwieraniu. </p>
+<h1><a class="anchor" id="szacowanie"></a>
+Szacowanie Rozmiarów Fragmentów Dziennika</h1>
+<p>Niech najmniejszy dysk będzie miał 100kB i będzie zapełniony plikami po 4kB. wychodzi, że nie zmieści się więcej niż 25 plików -1 na trzymanie nazw, rozmiarów i adresów. To przy założeniu, że nazwa ma średnio koło 10 znaków. 24pliki * ( 19B na nazwę, długości i adres ) + 18 na nagówek z jednym fragmentem dziennika = 474B Czyli rozmiar bloku przyjmijmy 476B razem z wyrównaniem. Od tego momentu ze wzrostem rozmiaru dysku rozmiar fragmentu powinien wzrastać proporcjonalnie, aż do osiągnięcia maksymalenj długości pojedyńczego fragmentu. Czyli średnio przy 4,6MB będzie potrzebny następny blok. y - rozmiar fragmentu dziennika x - rzozmiar pliku y:=ceil(0.00476*x)+ceil(0.00476*x)%4 jeśli y &gt; 65532 to y:=65532 </p>
+<h1><a class="anchor" id="ulozenie_plikow"></a>
+Ułożenie Plików</h1>
+<p>Jeśli będzie to możliwe, to pliki będą zapisywane w jednym fragmenci, jeśli nie, to będą one podzielone na najwieksze możliwe pasujące w wolne miejsca fragmenty. </p>
+<h1><a class="anchor" id="dlaczego"></a>
+Dlaczego tak?</h1>
+<p>Jak powszechnie wiadomo jeśli elementy nie są do siebie idealnie wpasowane, to zajmują więcej miejsca (fragmentacja), jeśli mamy wiele elmentów przynajmniej dwóch różnych rozmiarów, to zajmą one przestrzeń lepiej niż taka sama obętość identycznych elementów. To troche tak jak chaotyczne pakowanie rzeczy do plecaka. Jeśli skasujemy jakiś plik i na jego miejsce wsadzimy inny, to powstanie przerwa, którą trudno by było wypełnić jeszcze innym plikiem, ale przychodzi nam z pomocą mniejszy fragment danych dziennika, które z pewością tam się zmieszczą. :-)</p>
+<p>W taki rozwiązanie jest też chyba dość ciekawe. </p>
+</div></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Wygenerowano N, 24 maj 2015 00:57:29 dla System Plików programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1432386088 source:f:\moje dokumenty\soi\zad6\system_plikow\main.cpp
+	<iostream>
+	"system_plikow_lib.h"
+
+1432418279 f:\moje dokumenty\soi\zad6\system_plikow\system_plikow_lib.h
+	<string>
+	<fstream>
+
+1432385091 source:f:\moje dokumenty\soi\zad6\system_plikow\system_plikow_lib.cpp
+	"system_plikow_lib.h"
+	<cstdlib>
+	<cstring>
+	<iostream>
+
