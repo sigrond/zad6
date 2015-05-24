@@ -218,23 +218,32 @@ std::clog<<"utworzone miejsce w dzienniku poz: "<<poz<<std::endl;
     f.write(nazwa.c_str(), nazwa.size());/**< nazwa */
     //f.write((char*)&zero,(nazwa.size()+9)%4);/**< opcjonalne zera kończące nazwę */
     f.write((char*)&p_size, 4);/**< rozmiar pliku */
+std::clog<<"p_size: "<<p_size<<std::endl;
     unsigned long int p_file_adr=0;
-    unsigned long int tmp_adr=f.tellg();
-    best_fit bf=znajdz_miejsce_na_plik(p_size+8);
-    p_file_adr=bf.adres;
-    f.seekg(tmp_adr, f.beg);
-std::clog<<"bf.adres("<<f.tellg()<<"): "<<bf.adres<<std::endl;
-    f.write((char*)&p_file_adr, 4);/**< adres pierwszego fragmentu pliku */
-    char* buf=new char[bf.rozmiar];
-    p.read(buf,bf.rozmiar-8);
-    f.write((char*)&bf.rozmiar, 4);
-    f.write(buf,bf.rozmiar-8);
-    if(bf.nadmiar==0)
+    unsigned long int tmp_adr=0;
+    char* buf;
+    best_fit bf;
+    do
     {
-        f.write((char*)&zero, 4);
-    }
-/**< \todo uzupełnić kopiowanie pliku, o pętlę dzielącą na fragmenty */
-    delete[] buf;
+        tmp_adr=f.tellg();/**< w tym miejscu wskazanie na następny fragment pliku */
+        bf=znajdz_miejsce_na_plik(p_size+8);
+        p_file_adr=bf.adres;
+        f.seekg(tmp_adr, f.beg);
+std::clog<<"bf.adres("<<f.tellg()<<"): "<<bf.adres<<std::endl;
+std::clog<<"bf.rozmiar("<<f.tellg()<<"): "<<bf.rozmiar<<std::endl;
+std::clog<<"bf.nadmiar: "<<bf.nadmiar<<std::endl;
+        f.write((char*)&p_file_adr, 4);/**< adres pierwszego fragmentu pliku */
+        buf=new char[bf.rozmiar];
+        p.read(buf,bf.rozmiar-8);
+        f.seekg(p_file_adr, f.beg);
+        f.write((char*)&bf.rozmiar, 4);/**< rozmiar fragmentu pliku */
+        f.write(buf,bf.rozmiar-8);/**< zapis danych z pliku */
+        if(bf.nadmiar==0)
+        {
+            f.write((char*)&zero, 4);
+        }
+        delete[] buf;
+    }while(bf.nadmiar!=0);
     f.close();
     p.close();
     return 1;
@@ -480,25 +489,32 @@ std::clog<<"znajdz_miejsce_na_plik(unsigned long int rozmiar)"<<std::endl;
     std::pair< unsigned long int, unsigned long int> tmp_pair;
     f.seekg(8, f.beg);
     f.read((char*)&adr_dz, 4);
+std::clog<<"adres dziennika: "<<adr_dz<<std::endl;
     tmp_pair=std::make_pair(0,11);
     v.push_back(tmp_pair);
     while(adr_dz!=0)/**< spisywanie zajętych obszarów */
     {
         f.seekg(adr_dz, f.beg);
         f.read((char*)&dl_dz, 2);/**< długość fragmentu dziennika */
+std::clog<<"długość fragmentu dziennika: "<<dl_dz<<std::endl;
         tmp_pair=std::make_pair(adr_dz, adr_dz+dl_dz);
         v.push_back(tmp_pair);/**< dodanie zakresu fragmentu dziennika */
         for(int i=0; i<dl_dz-14; i++)
         {
             f.seekg(adr_dz+2+i, f.beg);/**< tutaj szukamy początku info o pliku */
+//std::clog<<"f.tellg(): "<<f.tellg()<<std::endl;
             f.read((char*)&tmp, 1);/**< szukanie informacji o pliku */
             if(tmp>0)/**< znaleźliśmy informację o pliku */
             {
-                i+=tmp;/**< przeskakujemy nazwę */
-                f.seekg(tmp, f.cur);
+std::clog<<"dlugosc nazwy: "<<(int)tmp<<std::endl;
+std::clog<<"f.tellg(): "<<f.tellg()<<std::endl;
+                i+=tmp+8;/**< przeskakujemy nazwę, rozmiar i adres */
+                f.seekg(tmp-1, f.cur);
+std::clog<<"f.tellg(): "<<f.tellg()<<std::endl;
                 f.read((char*)&dl_pl, 4);/**< całkowita długość pliku */
                 f.read((char*)&adr_pl, 4);/**< adres pierwszego fragmentu pliku */
                 adr_fr_pl=adr_pl;
+std::clog<<"adres pliku: "<<adr_fr_pl<<" rozmiar c pliku: "<<dl_pl<<std::endl;
                 while(adr_fr_pl!=0)/**< szukanie fragmentów pliku */
                 {
                     f.seekg(adr_fr_pl, f.beg);/**< skok do początka fragmentu pliku */
@@ -550,7 +566,7 @@ std::clog<<"znajdz_miejsce_na_plik(unsigned long int rozmiar)"<<std::endl;
         {
             caly=true;
             r.adres=spaces.at(i).first;
-            r.rozmiar=spaces.at(i).second;
+            r.rozmiar=rozmiar;//spaces.at(i).second;
             r.nadmiar=0;
             return r;/**< znalezliśmy wpasowanie całosci */
         }

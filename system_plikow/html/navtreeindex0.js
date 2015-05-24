@@ -48,6 +48,8 @@ var NAVTREEINDEX0 =
 "structsystem__plikow_1_1best__fit.html#a267a7be1b6d41571c02f57d22009da04":[6,0,0,0,0],
 "structsystem__plikow_1_1best__fit.html#abc81ee22db410633c538d29b0cd771d7":[6,0,0,0,2],
 "system__plikow__lib_8cpp.html":[7,0,1],
+"system__plikow__lib_8cpp.html#a7069a256c495b5df8d7e904741b2d44f":[7,0,1,0],
+"system__plikow__lib_8cpp.html#aed1b9df4f24daf38a1a1b0313e5a2a25":[7,0,1,1],
 "system__plikow__lib_8h.html":[7,0,2],
 "system__plikow__lib_8h_source.html":[7,0,2],
 "todo.html":[5]
