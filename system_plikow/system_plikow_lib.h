@@ -83,6 +83,13 @@ przy jego kopiowaniu/otwieraniu.
  */
 class system_plikow
 {
+public:
+    struct best_fit/**< adres i rozmiar wolnego miejsca */
+    {
+        unsigned long int adres;/**< tu się zmieści */
+        unsigned long int rozmiar;/**< tyle się zmieści */
+        unsigned long int nadmiar;/**< tyle się nie zmieści */
+    }typedef best_fit;
 private:
     std::string nazwa_systemu;/**< nazwa trwale identyfikuje obiekt */
     unsigned long int rozmiar_systemu;/**< rozmiar pliku z systemem plikow w bajtach */
@@ -103,10 +110,4 @@ public:
     std::string show_files();
     std::string show_fs_map();
     bool set_fs_size(unsigned long int rozmiar);
-    struct/**< adres i rozmiar wolnego miejsca */
-    {
-        unsigned long int adres;/**< tu się zmieści */
-        unsigned long int rozmiar;/**< tyle się zmieści */
-        unsigned long int nadmiar;/**< tyle się nie zmieści */
-    }typedef best_fit;
 };

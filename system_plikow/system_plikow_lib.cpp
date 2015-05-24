@@ -21,7 +21,9 @@
  */
 system_plikow::system_plikow(std::string nazwa) : nazwa_systemu(nazwa)
 {
+std::clog<<"system_plikow(std::string nazwa)"<<std::endl;
     std::string tmp;
+    unsigned long int tmp2;
     file_exists=false;
     rozmiar_systemu=0;
     f.open(nazwa_systemu.c_str(), std::fstream::in | std::fstream::out);
@@ -36,7 +38,21 @@ system_plikow::system_plikow(std::string nazwa) : nazwa_systemu(nazwa)
                 f.close();
                 file_exists=true;
                 f.open(nazwa_systemu.c_str(), std::fstream::in | std::fstream::binary);
+                f.seekg(4, f.beg);
                 f.read((char*)&rozmiar_systemu, 4);
+                tmp2=ceil(0.00476*rozmiar_systemu);
+                rozm_fragm_dzien=tmp2+(tmp2%4);
+                if(rozm_fragm_dzien>65532)/**< najwiekszy możliwy fragment dziennika,
+                ze względu na zakres rozmiaru fragmentu i wyrównanie naturalne */
+                {
+                    rozm_fragm_dzien=65532;
+                }
+                else if(rozm_fragm_dzien<270)/**< najmiejszy bezpieczny fragment,
+                    ze względu na maksymalną długość napisu */
+                {
+                    rozm_fragm_dzien=270;
+                }
+std::clog<<"wczytany rozmiar systemu: "<<rozmiar_systemu<<std::endl;
                 f.close();
             }
             else
@@ -70,6 +86,7 @@ system_plikow::system_plikow(std::string nazwa) : nazwa_systemu(nazwa)
 system_plikow::system_plikow(std::string nazwa, unsigned long int rozmiar)
     : system_plikow::system_plikow(nazwa)
 {
+std::clog<<"system_plikow(std::string nazwa, unsigned long int rozmiar)"<<std::endl;
     unsigned long int tmp;
     if(file_exists)
     {
@@ -101,6 +118,7 @@ system_plikow::system_plikow(std::string nazwa, unsigned long int rozmiar)
  */
 bool system_plikow::create_fs_file()
 {
+std::clog<<"create_fs_file()"<<std::endl;
     unsigned long int tmp=0;
     if(file_exists)
     {
@@ -113,6 +131,7 @@ bool system_plikow::create_fs_file()
         f.write((char*)&rozmiar_systemu, 4);
         f.write((char*)&tmp, 4);
         f.close();
+        file_exists=true;
         return true;
     }
     return false;
@@ -126,9 +145,23 @@ bool system_plikow::create_fs_file()
  */
 bool system_plikow::set_fs_size(unsigned long int rozmiar)
 {
+std::clog<<"set_fs_size(unsigned long int rozmiar)"<<std::endl;
+    unsigned long int tmp;
     if(!file_exists)
     {
         rozmiar_systemu=rozmiar;
+        tmp=ceil(0.00476*rozmiar_systemu);
+        rozm_fragm_dzien=tmp+(tmp%4);
+        if(rozm_fragm_dzien>65532)/**< najwiekszy możliwy fragment dziennika,
+        ze względu na zakres rozmiaru fragmentu i wyrównanie naturalne */
+        {
+            rozm_fragm_dzien=65532;
+        }
+        else if(rozm_fragm_dzien<270)/**< najmiejszy bezpieczny fragment,
+            ze względu na maksymalną długość napisu */
+        {
+            rozm_fragm_dzien=270;
+        }
         return true;
     }
     return false;
@@ -141,6 +174,7 @@ bool system_plikow::set_fs_size(unsigned long int rozmiar)
  */
 bool system_plikow::delete_fs_file()
 {
+std::clog<<"delete_fs_file()"<<std::endl;
     if(remove(nazwa_systemu.c_str())!= 0)
     {
         std::cerr<<"nie udalo sie usunac dysku wirtualnego"<<std::endl;
@@ -151,11 +185,13 @@ bool system_plikow::delete_fs_file()
 
 int system_plikow::cp_d_to_v(std::string nazwa)
 {
+std::clog<<"cp_d_to_v(std::string nazwa)"<<std::endl;
     std::fstream p;
     unsigned long int p_size=0;
     p.open(nazwa.c_str(), std::fstream::in | std::fstream::binary);
     if(!p.is_open())
     {
+        std::cerr<<"błąd otwierania pliku: "<<nazwa<<std::endl;
         return 0;
     }
     if(!file_exists)
@@ -170,19 +206,35 @@ int system_plikow::cp_d_to_v(std::string nazwa)
     unsigned char p_nam_siz=nazwa.size();/**< zakładam, że się nie przepełni */
     unsigned long int zero=0;
     poz=znajdz_miejsce_w_dzienniku_wieksze_niz(p_nam_siz+9+(p_nam_siz+9)%4);
+std::clog<<"odpowiednie miejsce w dzienniku poz: "<<poz<<std::endl;
     p_nam_siz+=(p_nam_siz+9)%4;/**< naiwne wyrównanie */
     if(poz==0)
     {
         poz=2+powieksz_dziennik(rozm_fragm_dzien);
+std::clog<<"utworzone miejsce w dzienniku poz: "<<poz<<std::endl;
     }
     f.seekg(poz, f.beg);
     f.write((char*)&p_nam_siz, 1);/**< długość nazwy */
     f.write(nazwa.c_str(), nazwa.size());/**< nazwa */
-    f.write((char*)&zero,(nazwa.size()+9)%4);/**< opcjonalne zera kończące nazwę */
+    //f.write((char*)&zero,(nazwa.size()+9)%4);/**< opcjonalne zera kończące nazwę */
     f.write((char*)&p_size, 4);/**< rozmiar pliku */
     unsigned long int p_file_adr=0;
-
+    unsigned long int tmp_adr=f.tellg();
+    best_fit bf=znajdz_miejsce_na_plik(p_size+8);
+    p_file_adr=bf.adres;
+    f.seekg(tmp_adr, f.beg);
+std::clog<<"bf.adres("<<f.tellg()<<"): "<<bf.adres<<std::endl;
     f.write((char*)&p_file_adr, 4);/**< adres pierwszego fragmentu pliku */
+    char* buf=new char[bf.rozmiar];
+    p.read(buf,bf.rozmiar-8);
+    f.write((char*)&bf.rozmiar, 4);
+    f.write(buf,bf.rozmiar-8);
+    if(bf.nadmiar==0)
+    {
+        f.write((char*)&zero, 4);
+    }
+/**< \todo uzupełnić kopiowanie pliku, o pętlę dzielącą na fragmenty */
+    delete[] buf;
     f.close();
     p.close();
     return 1;
@@ -197,6 +249,7 @@ int system_plikow::cp_d_to_v(std::string nazwa)
  */
 unsigned long int system_plikow::znajdz_miejsce_w_dzienniku_wieksze_niz(unsigned long int rozmiar)
 {
+std::clog<<"znajdz_miejsce_w_dzienniku_wieksze_niz(unsigned long int rozmiar)"<<std::endl;
     bool stan=f.is_open();
     if(!stan)
     {
@@ -210,10 +263,11 @@ unsigned long int system_plikow::znajdz_miejsce_w_dzienniku_wieksze_niz(unsigned
     unsigned char dl_nazwy=0;
     unsigned short int licz_dl_fragm=0;
     //unsigned long int rozm_pliku=0;
-    while(i<length)
+    while(i<length)/**< dziennik może być tylo w już napoczętej części */
     {
         f.seekg (i, f.beg);
         f.read((char*)&adr_fragm, 4);/**< wczytanie adresu fragmentu */
+std::clog<<"sprawdzam fragment: "<<adr_fragm<<std::endl;
         if(adr_fragm==0)/**< nie znajdziemy takiego miejsca */
         {
             if(!stan)
@@ -222,29 +276,43 @@ unsigned long int system_plikow::znajdz_miejsce_w_dzienniku_wieksze_niz(unsigned
             }
             return 0;
         }
+        f.seekg(adr_fragm, f.beg);
         f.read((char*)&rozm_fragm, 2);/**< wczytanie rozmiaru fragmentu */
+std::clog<<"rozmiar sprawdzanego fragmentu: "<<rozm_fragm<<std::endl;
         licz_dl_fragm=0;
         for(unsigned long int j=0; j<rozm_fragm; j++)/**< szukanie wolnej przestrzeni we fragmencie */
         {
             //f.seekg (adr_fragm+2+j, f.beg);
             f.read((char*)&dl_nazwy, 1);
+//std::clog<<"dlugosc nazwy: "<<(unsigned short)dl_nazwy<<std::endl;
+//system("pause");
             if(dl_nazwy>0)
             {
-                if(j>=rozmiar)/**< szukana wolna przestrzen znaleziona */
+std::clog<<"dlugosc nazwy: "<<(unsigned short)dl_nazwy<<std::endl;
+                if(licz_dl_fragm>=rozmiar)/**< szukana wolna przestrzen znaleziona */
                 {
                     if(!stan)
                     {
                         f.close();
                     }
-                    return j-licz_dl_fragm;/**< poczatek wolnego obszaru */
+                    return f.tellg()-licz_dl_fragm;/**< poczatek wolnego obszaru */
                 }
                 f.seekg (dl_nazwy+8, f.cur);/**< przeskakujemu nazwe, rozmiar i adres pliku */
                 licz_dl_fragm=0;/**< pusty ciąg przerwany */
                 continue;
             }
             licz_dl_fragm++;
+            if(licz_dl_fragm>=rozmiar)/**< szukana wolna przestrzen znaleziona */
+            {
+                if(!stan)
+                {
+                    f.close();
+                }
+                return f.tellg()-licz_dl_fragm;/**< poczatek wolnego obszaru */
+            }
+std::clog<<licz_dl_fragm<<","<<j<<" ";
         }
-        i=adr_fragm+rozm_fragm;
+        i=adr_fragm+rozm_fragm-4;
     }
     if(!stan)
     {
@@ -261,6 +329,8 @@ unsigned long int system_plikow::znajdz_miejsce_w_dzienniku_wieksze_niz(unsigned
  */
 unsigned long int system_plikow::powieksz_dziennik(unsigned long int rozm_fragm)
 {
+std::clog<<"powieksz_dziennik(unsigned long int rozm_fragm)"<<std::endl;
+std::clog<<"rozm_fragm: "<<rozm_fragm<<std::endl;
     bool stan=f.is_open();
     if(!stan)
     {
@@ -274,15 +344,44 @@ unsigned long int system_plikow::powieksz_dziennik(unsigned long int rozm_fragm)
     unsigned long int licz=0;
     unsigned long int next_i=8;
     unsigned char tmp=0;
-    while(i<length)
+    while(i<length && i<rozmiar_systemu)
     {
         i=next_i;
         f.seekg (i, f.beg);
         f.read((char*)&adr_fragm, 4);/**< wczytanie adresu fragmentu */
+std::clog<<"adres fragmentu: "<<adr_fragm<<std::endl;
         next_i=adr_fragm+rozm_fragm;/**< jeśli chcemy zmiennego rozmiaru w danym pliku, to trzeba by zawsze wczytywać */
         if(adr_fragm==0)/**< koniec */
         {
             licz=0;
+            if(f.tellg()==length)
+            {
+std::clog<<"f.tellg(): "<<f.tellg()<<std::endl;
+std::clog<<"rozmiar systemu: "<<rozmiar_systemu<<std::endl;
+                if(f.tellg()+rozm_fragm<rozmiar_systemu)
+                {
+                    adr_fragm=f.tellg();
+                    f.write((char*)&rozm_fragm, 2);
+                    for(unsigned long int j=2; j<rozm_fragm; j++)/**< nowy pusty fragment dziennika */
+                    {
+                        if(f.tellg()>=rozmiar_systemu)
+                        {
+                            throw new std::string("próba wykroczenia poza dysk");
+                        }
+                        f.write((char*)&zero,1);
+                    }
+std::clog<<"f.tellg(): "<<f.tellg()<<std::endl;
+                    f.seekg (i, f.beg);/**< na pozycji gdzie było wskazanie na zero */
+std::clog<<"f.tellg(): "<<f.tellg()<<std::endl;
+                    f.write((char*)&adr_fragm, 4);/**< nadpisaniee poprzedniego wskazania nowym */
+                    return adr_fragm;
+                }
+                else
+                {
+                    //std::cerr<<"nie ma wystarczająco miejsca, żeby dodać następny fragment dziennika"<<std::endl;
+                    throw new std::string("nie ma wystarczająco miejsca, żeby dodać następny fragment dziennika");
+                }
+            }
             for(unsigned long int j=f.tellg();j<length;j++)/**< szukanie wolnego miejsca */
             {
                 f.read((char*)&tmp, 1);
@@ -295,6 +394,10 @@ unsigned long int system_plikow::powieksz_dziennik(unsigned long int rozm_fragm)
                         f.write((char*)&rozm_fragm, 2);
                         for(unsigned long int j=2; j<rozm_fragm; j++)/**< nowy pusty fragment dziennika */
                         {
+                            if(f.tellg()>=rozmiar_systemu)
+                            {
+                                throw new std::string("próba wykroczenia poza dysk");
+                            }
                             f.write((char*)&zero,1);
                         }
                         f.seekg (i, f.beg);/**< na pozycji gdzie było wskazanie na zero */
@@ -335,6 +438,16 @@ unsigned long int system_plikow::powieksz_dziennik(unsigned long int rozm_fragm)
     return adr_fragm;
 }
 
+bool my_cmp(std::pair<unsigned long int, unsigned long int> a, std::pair<unsigned long int, unsigned long int> b)
+{
+    return a.first<b.first;
+}
+
+bool my_cmp2(std::pair<unsigned long int, unsigned long int> a, std::pair<unsigned long int, unsigned long int> b)
+{
+    return a.second<b.second;
+}
+
 /** \brief wyszukiwanie wolnych przestrzeni przez zmapowanie już zajętych
  *
  * \param rozmiar unsigned longint
@@ -343,7 +456,11 @@ unsigned long int system_plikow::powieksz_dziennik(unsigned long int rozm_fragm)
  */
 system_plikow::best_fit system_plikow::znajdz_miejsce_na_plik(unsigned long int rozmiar)
 {
+std::clog<<"znajdz_miejsce_na_plik(unsigned long int rozmiar)"<<std::endl;
     best_fit r;
+    r.adres=0;
+    r.rozmiar=0;
+    r.nadmiar=rozmiar;
     bool stan=f.is_open();
     if(!stan)
     {
@@ -352,37 +469,98 @@ system_plikow::best_fit system_plikow::znajdz_miejsce_na_plik(unsigned long int 
     f.seekg (0, f.end);
     unsigned long int length=f.tellg();
     unsigned long int najdluzy=0;
-    unsigned long int najkrutszy_dluzszy=0;
-    unsigned long int najdluzy_krutszy=0;
-    std::vector<std::pair <unsigned long int, unsigned long int> > v;/**< wektor zakresów */
+    std::vector< std::pair <unsigned long int, unsigned long int> > v;/**< wektor zakresów */
     unsigned long int adr_dz=0;
     unsigned short int dl_dz=0;
     unsigned long int adr_pl=0;
     unsigned long int dl_pl=0;
+    unsigned long int adr_fr_pl=0;
+    unsigned long int dl_fr_pl=0;
     unsigned char tmp=0;
-    std::pair tmp_pair;
+    std::pair< unsigned long int, unsigned long int> tmp_pair;
     f.seekg(8, f.beg);
     f.read((char*)&adr_dz, 4);
-    while(adr_dz!=0)
+    tmp_pair=std::make_pair(0,11);
+    v.push_back(tmp_pair);
+    while(adr_dz!=0)/**< spisywanie zajętych obszarów */
     {
-        f.seek(adr_dz, f.beg);
-        f.read((char*)&dl_dz, 2);
+        f.seekg(adr_dz, f.beg);
+        f.read((char*)&dl_dz, 2);/**< długość fragmentu dziennika */
         tmp_pair=std::make_pair(adr_dz, adr_dz+dl_dz);
         v.push_back(tmp_pair);/**< dodanie zakresu fragmentu dziennika */
-        for(unsigned long int i=0; i<dl_dz-14; i++)
+        for(int i=0; i<dl_dz-14; i++)
         {
-            f.read((char*)&tmp, 1);
-            if(tmp>0)
+            f.seekg(adr_dz+2+i, f.beg);/**< tutaj szukamy początku info o pliku */
+            f.read((char*)&tmp, 1);/**< szukanie informacji o pliku */
+            if(tmp>0)/**< znaleźliśmy informację o pliku */
             {
-                i+=tmp;
-                f.seek(tmp, f.cur);
-                f.read((char*)&dl_pl, 4);
-                f.read((char*)&adr_pl, 4);
-                /**< \todo napisać znajdowanie zkaresów fragmentów plików */
+                i+=tmp;/**< przeskakujemy nazwę */
+                f.seekg(tmp, f.cur);
+                f.read((char*)&dl_pl, 4);/**< całkowita długość pliku */
+                f.read((char*)&adr_pl, 4);/**< adres pierwszego fragmentu pliku */
+                adr_fr_pl=adr_pl;
+                while(adr_fr_pl!=0)/**< szukanie fragmentów pliku */
+                {
+                    f.seekg(adr_fr_pl, f.beg);/**< skok do początka fragmentu pliku */
+                    f.read((char*)&dl_fr_pl, 4);/**< dlugość fragmentu pliku */
+                    tmp_pair=std::make_pair(adr_fr_pl,adr_fr_pl+dl_fr_pl);/**< zakres fragmentu */
+                    v.push_back(tmp_pair);/**< dodanie kolejnego zajętego obszaru */
+                    f.seekg(adr_fr_pl+dl_fr_pl-4, f.beg);/**< skok do wskaźnika na następny adres */
+                    f.read((char*)&adr_fr_pl, 4);/**< wczytanie następnego adresu */
+                }
             }
         }
 
-        f.read((char*)&adr_dz, 4);
+        f.read((char*)&adr_dz, 4);/**< następny adres fragmentu dzinnika */
+    }
+    std::sort(v.begin(),v.end(),my_cmp);/**< uporządkowanie zajętych obszarów */
+    //tmp_pair=std::make_pair(v.at(v.size()-1).second+1, rozmiar_systemu-1);/**< pozostała wolna przestrzeń */
+    //v.push_back(tmp_pair);
+
+    std::clog<<"zajęte fragmenty"<<std::endl;
+    for(int i=0;i<v.size();i++)
+    {
+        std::clog<<v.at(i).first<<","<<v.at(i).second<<" ";
+    }
+
+    int tmp_dl;
+    std::vector< std::pair<unsigned long int, unsigned long int> > spaces;/**< adres i rozmiar wolnej przestrzeni */
+    for(int i=1;i<v.size();i++)
+    {
+        tmp_dl=v.at(i).first-v.at(i-1).second;/**< wyliczanie wolnych przestrzeni */
+        tmp_pair=std::make_pair(v.at(i-1).second+1,tmp_dl-1);
+        spaces.push_back(tmp_pair);
+    }
+
+    tmp_pair=std::make_pair(v.at(v.size()-1).second+1, rozmiar_systemu-v.at(v.size()-1).second);/**< pozostała wolna przestrzeń */
+    spaces.push_back(tmp_pair);
+
+    sort(spaces.begin(),spaces.end(),my_cmp2);/**< ułożenie wolnych przestrzeni po rozmiarach */
+
+    std::clog<<"wolne fragmenty"<<std::endl;
+    for(int i=0;i<spaces.size();i++)
+    {
+        std::clog<<spaces.at(i).first<<","<<spaces.at(i).second<<" ";
+    }
+
+    bool caly=false;
+    for(int i=0;i<spaces.size();i++)
+    {
+        if(spaces.at(i).second>rozmiar)/**< pierwsza najmniejsza przestrzeń, gdzie zmieści się zadany rozmiar */
+        {
+            caly=true;
+            r.adres=spaces.at(i).first;
+            r.rozmiar=spaces.at(i).second;
+            r.nadmiar=0;
+            return r;/**< znalezliśmy wpasowanie całosci */
+        }
+        if(spaces.at(i).second>najdluzy)
+        {
+            najdluzy=spaces.at(i).second;
+            r.adres=spaces.at(i).first;
+            r.rozmiar=spaces.at(i).second;
+            r.nadmiar=rozmiar-r.rozmiar;
+        }
     }
 
     if(!stan)

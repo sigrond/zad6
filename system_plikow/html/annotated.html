@@ -107,8 +107,9 @@ $(document).ready(function(){initNavTree('annotated.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock">Tutaj znajdują się klasy, struktury, unie i interfejsy wraz z ich krótkimi opisami:</div><div class="directory">
-<table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><img src="ftv2cl.png" alt="C" width="24" height="22" /><a class="el" href="classsystem__plikow.html" target="_self">system_plikow</a></td><td class="desc">Abstrakcyjna struktura trzymajaca w pamieci informacje o systemie plikow (wirtualny dysk z katalogiem) jesli chcemy cos z nim zrobic </td></tr>
+<div class="levels">[poziom szczegółów <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span>]</div><table class="directory">
+<tr id="row_0_" class="even"><td class="entry"><img id="arr_0_" src="ftv2mlastnode.png" alt="\" width="16" height="22" onclick="toggleFolder('0_')"/><img src="ftv2cl.png" alt="C" width="24" height="22" /><a class="el" href="classsystem__plikow.html" target="_self">system_plikow</a></td><td class="desc">Abstrakcyjna struktura trzymajaca w pamieci informacje o systemie plikow (wirtualny dysk z katalogiem) jesli chcemy cos z nim zrobic </td></tr>
+<tr id="row_0_0_"><td class="entry"><img src="ftv2blank.png" alt="&#160;" width="16" height="22" /><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><img src="ftv2cl.png" alt="C" width="24" height="22" /><a class="el" href="structsystem__plikow_1_1best__fit.html" target="_self">best_fit</a></td><td class="desc"></td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
@@ -116,7 +117,7 @@ $(document).ready(function(){initNavTree('annotated.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Wygenerowano N, 24 maj 2015 00:57:30 dla System Plików programem
+    <li class="footer">Wygenerowano N, 24 maj 2015 11:02:16 dla System Plików programem
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

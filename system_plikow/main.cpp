@@ -13,6 +13,7 @@ int main()
         system_plikow fs("drive1.tjfs");
         cout<<fs.set_fs_size(100000)<<endl;;
         cout<<fs.create_fs_file()<<endl;
+        fs.cp_d_to_v("test1.txt");
     }
     catch(string *s)
     {

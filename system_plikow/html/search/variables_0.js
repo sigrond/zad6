@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['best_5ffit',['best_fit',['../classsystem__plikow.html#a6f45bc54cb4fa7e34b316e2f4d7a61dc',1,'system_plikow']]]
+  ['adres',['adres',['../structsystem__plikow_1_1best__fit.html#a267a7be1b6d41571c02f57d22009da04',1,'system_plikow::best_fit']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['nadmiar',['nadmiar',['../classsystem__plikow.html#a818ce2da3a39d7d5b14d538a07125c7f',1,'system_plikow']]],
-  ['nazwa_5fsystemu',['nazwa_systemu',['../classsystem__plikow.html#abcb01935a0bf5d8f5b7a42246ef72ca5',1,'system_plikow']]]
+  ['main',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]],
+  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]]
 ];

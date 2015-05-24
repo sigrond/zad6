@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>System Plików: Legenda wykresu</title>
+<title>System Plików: Dokumentacja struktury system_plikow::best_fit</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,7 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
     <ul class="tablist">
       <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
       <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
-      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Klasy</span></a></li>
       <li><a href="files.html"><span>Pliki</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -65,6 +65,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
       </li>
     </ul>
   </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Lista&#160;klas</span></a></li>
+      <li><a href="classes.html"><span>Indeks&#160;klas</span></a></li>
+      <li><a href="functions.html"><span>Składowe&#160;klas</span></a></li>
+    </ul>
+  </div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -77,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('graph_legend.html','');});
+$(document).ready(function(){initNavTree('structsystem__plikow_1_1best__fit.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -95,77 +102,76 @@ $(document).ready(function(){initNavTree('graph_legend.html','');});
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Atrybuty publiczne</a> &#124;
+<a href="structsystem__plikow_1_1best__fit-members.html">Lista wszystkich składowych</a>  </div>
   <div class="headertitle">
-<div class="title">Legenda wykresu</div>  </div>
+<div class="title">Dokumentacja struktury system_plikow::best_fit</div>  </div>
 </div><!--header-->
 <div class="contents">
-<p>Ta strona wyjaśnia jak interpretować wykresy, które są wygenerowane przez doxygen.</p>
-<p>Rozważ następujący przykład: </p>
-<div class="fragment"><div class="line"><span class="comment">/*! Klasa Niewidzialna z powodu okrojenia */</span></div>
-<div class="line"><span class="keyword">class </span>Niewidzialna { };</div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">/*! Klasa Okrojona, relacja dziedziczenia jest ukryta */</span></div>
-<div class="line"><span class="keyword">class </span>Okrojona : <span class="keyword">public</span> Niewidzialna { };</div>
-<div class="line"></div>
-<div class="line"><span class="comment">/* Klasa nie udokumentowana komentarzami doxygen */</span></div>
-<div class="line"><span class="keyword">class </span>Nieudokumentowana { };</div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">/*! Klasa, która jest dziedziczona publicznie */</span></div>
-<div class="line"><span class="keyword">class </span>PublicznaBaza : <span class="keyword">public</span> Okrojona { };</div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">/*! A template class */</span></div>
-<div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt; <span class="keyword">class </span>Templ { };</div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">/*! Klasa, która jest dziedziczona przy użyciu dziedziczenia chronionego */</span></div>
-<div class="line"><span class="keyword">class </span>ChronionaBaza { };</div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">/*! Klasa, która jest dziedziczona prywatnie */</span></div>
-<div class="line"><span class="keyword">class </span>PrywatnaBaza { };</div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">/*! Klasa, która jest użyta przez klasę Dziedziczona */</span></div>
-<div class="line"><span class="keyword">class </span>Uzyta { };</div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">/*! Superklasa, która dziedziczy kilka innych klas */</span></div>
-<div class="line"><span class="keyword">class </span>Dziedziczona : <span class="keyword">public</span> PublicznaBaza,</div>
-<div class="line">                     <span class="keyword">protected</span> ChronionaBaza,</div>
-<div class="line">                     <span class="keyword">private</span> PrywatnaBaza,</div>
-<div class="line">                     <span class="keyword">public</span> Nieudokumentowana,</div>
-<div class="line">                     <span class="keyword">public</span> Templ&lt;int&gt;</div>
-<div class="line">{</div>
-<div class="line">  <span class="keyword">private</span>:</div>
-<div class="line">    Uzyta *m_usedClass;</div>
-<div class="line">};</div>
-</div><!-- fragment --><p> Rezultat na następującym wykresie:</p>
-<center><div class="image">
-<img src="graph_legend.png" />
+
+<p><code>#include &lt;<a class="el" href="system__plikow__lib_8h_source.html">system_plikow_lib.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Atrybuty publiczne</h2></td></tr>
+<tr class="memitem:a267a7be1b6d41571c02f57d22009da04"><td class="memItemLeft" align="right" valign="top">unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsystem__plikow_1_1best__fit.html#a267a7be1b6d41571c02f57d22009da04">adres</a></td></tr>
+<tr class="separator:a267a7be1b6d41571c02f57d22009da04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc81ee22db410633c538d29b0cd771d7"><td class="memItemLeft" align="right" valign="top">unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsystem__plikow_1_1best__fit.html#abc81ee22db410633c538d29b0cd771d7">rozmiar</a></td></tr>
+<tr class="separator:abc81ee22db410633c538d29b0cd771d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00293140dac9da95ac7d25ba280eaede"><td class="memItemLeft" align="right" valign="top">unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsystem__plikow_1_1best__fit.html#a00293140dac9da95ac7d25ba280eaede">nadmiar</a></td></tr>
+<tr class="separator:a00293140dac9da95ac7d25ba280eaede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>&lt; adres i rozmiar wolnego miejsca </p>
+</div><h2 class="groupheader">Dokumentacja atrybutów składowych</h2>
+<a class="anchor" id="a267a7be1b6d41571c02f57d22009da04"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long int system_plikow::best_fit::adres</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>tu się zmieści </p>
+
 </div>
-</center><p>Prostokąty w powyższym wykresie mają następujące znaczenie: </p>
-<ul>
-<li>
-Wypełniony czarny prostokąt reprezentuje strukturę lub klasę dla której został wygenerowany wykres. </li>
-<li>
-Prostokąt z czarną obwolutą oznacza udokumentowaną strukturę lub klasę. </li>
-<li>
-Prostokąt z szarą obwolutą oznacza nieudokumentowaną strukturę lub klasę. </li>
-<li>
-Prostokąt z czerwoną obwolutą oznacza udokumentowaną strukturę lub klasę dla której nie są pokazane wszystkie relacje dziedziczenia/zawierania. Wykres jest okrojony, jeśli nie mieści się w określonych brzegach. </li>
-</ul>
-<p>Strzałki mają następujące znaczenie: </p>
-<ul>
-<li>
-Ciemno niebieska strzałka jest używana do wizualizacji relacji dziedziczenia publicznego pomiędzy dwiema klasami. </li>
-<li>
-Ciemno zielona strzałka jest używana dla dziedziczenia chronionego. </li>
-<li>
-Ciemno czerwona strzałka jest używana dla dziedziczenia prywatnego. </li>
-<li>
-Fioletowa przerywana strzałka jest używana jeśli klasa jest zawarta lub użyta przez inną klasę. Strzałka jest podpisana zmienną(ymi) przez które wskazywana klasa lub struktura jest dostępna.  </li>
+</div>
+<a class="anchor" id="a00293140dac9da95ac7d25ba280eaede"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long int system_plikow::best_fit::nadmiar</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>tyle się nie zmieści </p>
+
+</div>
+</div>
+<a class="anchor" id="abc81ee22db410633c538d29b0cd771d7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long int system_plikow::best_fit::rozmiar</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>tyle się zmieści </p>
+
+</div>
+</div>
+<hr/>Dokumentacja dla tej struktury została wygenerowana z pliku:<ul>
+<li><a class="el" href="system__plikow__lib_8h_source.html">system_plikow_lib.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="classsystem__plikow.html">system_plikow</a></li><li class="navelem"><a class="el" href="structsystem__plikow_1_1best__fit.html">best_fit</a></li>
     <li class="footer">Wygenerowano N, 24 maj 2015 11:02:16 dla System Plików programem
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>

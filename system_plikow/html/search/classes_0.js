@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['system_5fplikow',['system_plikow',['../classsystem__plikow.html',1,'']]]
+  ['best_5ffit',['best_fit',['../structsystem__plikow_1_1best__fit.html',1,'system_plikow']]]
 ];
